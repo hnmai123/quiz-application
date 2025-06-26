@@ -1,0 +1,30 @@
+# Build artifacts
+bin/
+obj/
+
+# Visual Studio files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# VSCode settings
+.vscode/
+
+# ASP.NET Secrets
+**/secrets.json
+
+# Configuration
+appsettings.Development.json
+appsettings.Local.json
+.env
+
+# Logs
+*.log
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# EF Core Migrations (optional — remove if you want to track them)
+# Migrations/
