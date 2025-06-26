@@ -13,6 +13,7 @@ namespace QuizApp.Models
         public int MaxMark { get; private set; }
         public List<Answer> Answers { get; private set; } = new();
         public Guid QuizId { get; private set; }
+        public Quiz? Quiz { get; private set; }
         public List<Answer> CorrectAnswers { get; private set; } = new();
         public QuestionType QuestionType { get; private set; }
         public Question(string questionText, int maxMark, QuestionType questionType, Guid quizId)
