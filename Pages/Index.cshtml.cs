@@ -1,19 +1,22 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-
+using QuizApp.Data;
+using QuizApp.Models;
 namespace QuizApp.Pages;
+using Microsoft.EntityFrameworkCore;
 
 public class IndexModel : PageModel
 {
-    private readonly ILogger<IndexModel> _logger;
-
-    public IndexModel(ILogger<IndexModel> logger)
+    private readonly QuizDbContext _context;
+    public IndexModel(QuizDbContext context)
     {
-        _logger = logger;
+        _context = context;
     }
-
-    public void OnGet()
+    public List<Quiz> Quizzes { get; set; } = new();
+    public async Task OnGetAsync()
     {
-
+        Quizzes = await _context.Quizzes
+            .Include(q => q.Questions)
+            .ToListAsync();
     }
 }

@@ -1,9 +1,14 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace QuizApp.Models
 {
     public enum QuestionType
     {
+        [Display(Name = "Multi Choice")]
         MultiChoice,
+        [Display(Name = "Single Choice")]
         SingleChoice,
+        [Display(Name = "Short Answer")]
         ShortAnswer
     }
     public class Question

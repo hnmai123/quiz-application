@@ -26,5 +26,7 @@ appsettings.Local.json
 .DS_Store
 Thumbs.db
 
-# EF Core Migrations (optional — remove if you want to track them)
-# Migrations/
+# SQLite database
+*.db
+*.db-shm
+*.db-wal

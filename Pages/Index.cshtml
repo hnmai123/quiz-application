@@ -8,3 +8,36 @@
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
+
+<h2>Available Quizzes</h2>
+
+<table class="table table-bordered table-str">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Status</th>
+            <th>Grade</th>
+            <th>Range</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var quiz in Model.Quizzes)
+        {
+            <tr>
+                <td>@quiz.Title</td>
+                <td>
+                    @if (quiz.IsAttempted)
+                    {
+                        <a asp-page="/View" asp-route-id="@quiz.Id" class="btn btn-outline-primary btn-sm">View</a>
+                    }
+                    else
+                    {
+                        <a asp-page="/Attempt" asp-route-id="@quiz.Id" class="btn btn-outline-primary btn-sm">Attempt</a>
+                    }
+                </td>
+                <td>@quiz.GradeDisplay</td>
+                <td>@quiz.GradeRange</td>
+            </tr>
+        }
+    </tbody>
+</table>

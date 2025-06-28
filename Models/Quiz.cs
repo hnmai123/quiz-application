@@ -21,10 +21,7 @@ namespace QuizApp.Models
         {
             Questions.Add(new Question(questionText, maxMark, questionType, Id));
         }
-        public bool IsAttempted()
-        {
-            return Grade.HasValue;
-        }
+        public bool IsAttempted => Grade.HasValue;
         public string GradeRange => $"0-{TotalMarks}";
         public double? GradePercentage => Grade.HasValue ? Math.Round(Grade.Value / TotalMarks * 100, 2) : null;
         public string GradeDisplay => GradePercentage.HasValue ? $"{GradePercentage.Value}%" : "-";

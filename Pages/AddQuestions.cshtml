@@ -1,0 +1,91 @@
+@page
+@using QuizApp.Models
+@using static QuizApp.Pages.AddQuestionsModel
+@model QuizApp.Pages.AddQuestionsModel
+@{
+    ViewData["Title"] = "Add Questions";
+}
+
+<h2>Add Questions to: @Model.Quiz?.Title</h2>
+
+<form method="post">
+    <input type="hidden" asp-for="QuizId" />
+
+    <!-- Question Text -->
+    <div class="mb-3">
+        <label asp-for="questionText" class="form-label">Question</label>
+        <textarea asp-for="questionText"
+                  class="form-control"
+                  placeholder="What is the value of pi?"
+                  required></textarea>
+    </div>
+
+    <!-- Max Mark -->
+    <div class="mb-3">
+        <label asp-for="MaxMark" class="form-label">Mark</label>
+        <input asp-for="MaxMark" class="form-control" type="number" min="1" required />
+    </div>
+
+    <!-- Question Type -->
+    <div class="mb-3">
+        <label asp-for="QuestionType" class="form-label">Question Type</label>
+        <select asp-for="QuestionType"
+                class="form-select"
+                asp-items="Html.GetEnumSelectList<QuestionType>()"
+                onchange="this.form.submit()"
+                name="QuestionType"
+                required>
+        </select>
+    </div>
+
+    @if (Model.QuestionType == QuestionType.ShortAnswer)
+    {
+        <!-- Short Answer Field -->
+        <div class="mb-3">
+            <label asp-for="ShortAnswerText" class="form-label">Answer</label>
+            <input asp-for="ShortAnswerText" class="form-control" />
+        </div>
+    }
+    else
+    {
+        <!-- New Answer Input -->
+        <div class="row g-2">
+            <div class="col-md-8">
+                <input asp-for="NewAnswerText" class="form-control" placeholder="Add an answer option" />
+            </div>
+            <div class="col-md-2">
+                <div class="form-check mt-2">
+                    <input asp-for="NewAnswerIsCorrect" class="form-check-input" />
+                    <label asp-for="NewAnswerIsCorrect" class="form-check-label">Correct</label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <button type="submit" asp-page-handler="AddAnswer" class="btn btn-outline-secondary">Add Answer</button>
+            </div>
+        </div>
+
+        <!-- Show Added Answers -->
+        @if (Model.GetType().GetProperty("TempAnswers")?.GetValue(Model) is IEnumerable<TempAnswer> answers && answers.Any())
+        {
+            <table class="table mt-3">
+                <thead>
+                    <tr>
+                        <th>Answer</th>
+                        <th>Correct</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var ans in answers)
+                    {
+                        <tr>
+                            <td>@ans.Text</td>
+                            <td>@(ans.IsCorrect ? "✓" : "x")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    }
+
+    <button type="submit" class="btn btn-success mt-3">Save</button>
+</form>
