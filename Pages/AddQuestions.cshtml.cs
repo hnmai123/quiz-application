@@ -30,6 +30,19 @@ public class AddQuestionsModel : PageModel
     [BindProperty]
     public string? ShortAnswerText { get; set; }
 
+    [BindProperty]
+    public int SelectedCorrectIndex { get; set; } = -1;
+
+    [BindProperty]
+    public bool IsLocked { get; set; } = false;
+
+    public IActionResult OnPostLockFields()
+    {
+        IsLocked = true;
+        return Page();
+    }
+
+
     [BindProperty(SupportsGet = true)]
     public Guid QuizId { get; set; }
     public Quiz? Quiz { get; set; }
@@ -52,6 +65,12 @@ public class AddQuestionsModel : PageModel
     }
     public async Task<IActionResult> OnPostAddAnswerAsync()
     {
+
+        if (!IsLocked)
+        {
+            ModelState.AddModelError("IsLocked", "Questions must be saved before adding answers.");
+            return Page();
+        }
         var quiz = await _context.Quizzes.FindAsync(QuizId);
         if (quiz == null)
         {
@@ -63,7 +82,7 @@ public class AddQuestionsModel : PageModel
             TempAnswers.Add(new TempAnswer
             {
                 Text = NewAnswerText.Trim(),
-                IsCorrect = NewAnswerIsCorrect
+                IsCorrect = QuestionType == QuestionType.MultiChoice ? NewAnswerIsCorrect : false
             });
             NewAnswerText = string.Empty;
             NewAnswerIsCorrect = false;
@@ -95,7 +114,7 @@ public class AddQuestionsModel : PageModel
             return Page();
         }
         var question = new Question(questionText.Trim(), MaxMark, QuestionType, quiz.Id);
-        
+
         quiz.AddQuestion(question.QuestionText, question.MaxMark, question.QuestionType);
         _context.Questions.Add(question);
 
@@ -109,9 +128,10 @@ public class AddQuestionsModel : PageModel
         }
         else
         {
-            foreach (var tempAnswer in TempAnswers)
+            for (int i = 0; i < TempAnswers.Count; i++)
             {
-                var answer = new Answer(question.Id, tempAnswer.Text.Trim(), tempAnswer.IsCorrect);
+                bool isCorrect = (SelectedCorrectIndex == i);
+                var answer = new Answer(question.Id, TempAnswers[i].Text.Trim(), isCorrect);
                 _context.Answers.Add(answer);
             }
         }
@@ -119,5 +139,27 @@ public class AddQuestionsModel : PageModel
         await _context.SaveChangesAsync();
         TempAnswers.Clear();
         return RedirectToPage("AddQuestions", new { QuizId = quiz.Id });
+    }
+
+    public async Task<IActionResult> OnPostChangeTypeAsync()
+    {
+        var quiz = await _context.Quizzes.FindAsync(QuizId);
+        if (quiz == null)
+        {
+            return NotFound();
+        }
+        Quiz = quiz;
+        TempAnswers.Clear();
+        if (QuestionType == QuestionType.ShortAnswer)
+        {
+            NewAnswerText = null;
+            NewAnswerIsCorrect = false;
+        }
+        else
+        {
+            NewAnswerText = string.Empty;
+            NewAnswerIsCorrect = false;
+        }
+        return Page();
     }
 }

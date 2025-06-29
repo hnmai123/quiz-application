@@ -6,86 +6,139 @@
     ViewData["Title"] = "Add Questions";
 }
 
-<h2>Add Questions to: @Model.Quiz?.Title</h2>
+<h2>@Model.Quiz?.Title</h2>
 
-<form method="post">
+<!-- Step 1: Lockable Question Setup -->
+<form method="post" asp-page-handler="LockFields" class="mb-4">
     <input type="hidden" asp-for="QuizId" />
+    <input type="hidden" asp-for="IsLocked"/>
 
-    <!-- Question Text -->
+    <div class="mb-3">
+        <label asp-for="QuestionType" class="form-label">Question Type</label>
+        @if (Model.IsLocked)
+        {
+            <input type="hidden" asp-for="QuestionType" />
+            <input class="form-control" value="@Model.QuestionType" readonly />
+        }
+        else
+        {
+            <select asp-for="QuestionType" class="form-select"
+                    asp-items="Html.GetEnumSelectList<QuestionType>()" required></select>
+        }
+    </div>
+
     <div class="mb-3">
         <label asp-for="questionText" class="form-label">Question</label>
         <textarea asp-for="questionText"
-                  class="form-control"
-                  placeholder="What is the value of pi?"
-                  required></textarea>
+          class="form-control"
+          placeholder="Enter your question..."
+          required
+          readonly="@Model.IsLocked">
+        </textarea>
     </div>
 
-    <!-- Max Mark -->
     <div class="mb-3">
         <label asp-for="MaxMark" class="form-label">Mark</label>
-        <input asp-for="MaxMark" class="form-control" type="number" min="1" required />
+        <input asp-for="MaxMark"
+            class="form-control"
+            type="number"
+            required
+            readonly="@Model.IsLocked" />
     </div>
 
-    <!-- Question Type -->
-    <div class="mb-3">
-        <label asp-for="QuestionType" class="form-label">Question Type</label>
-        <select asp-for="QuestionType"
-                class="form-select"
-                asp-items="Html.GetEnumSelectList<QuestionType>()"
-                onchange="this.form.submit()"
-                name="QuestionType"
-                required>
-        </select>
-    </div>
-
-    @if (Model.QuestionType == QuestionType.ShortAnswer)
+    @if (!Model.IsLocked)
     {
-        <!-- Short Answer Field -->
-        <div class="mb-3">
-            <label asp-for="ShortAnswerText" class="form-label">Answer</label>
-            <input asp-for="ShortAnswerText" class="form-control" />
-        </div>
+        <button type="submit" class="btn btn-primary">Add Answers</button>
     }
-    else
-    {
-        <!-- New Answer Input -->
+</form>
+
+<!-- Step 2: Add Answers -->
+@if (Model.IsLocked && (Model.QuestionType == QuestionType.SingleChoice || Model.QuestionType == QuestionType.MultiChoice))
+{
+    <form method="post" asp-page-handler="AddAnswer" class="mb-3">
+        <input type="hidden" asp-for="IsLocked" value="true"/>
+        <input type="hidden" asp-for="QuizId" />
+        <input type="hidden" asp-for="QuestionType" />
+        <input type="hidden" asp-for="questionText" />
+        <input type="hidden" asp-for="MaxMark" />
+
         <div class="row g-2">
             <div class="col-md-8">
                 <input asp-for="NewAnswerText" class="form-control" placeholder="Add an answer option" />
             </div>
-            <div class="col-md-2">
-                <div class="form-check mt-2">
-                    <input asp-for="NewAnswerIsCorrect" class="form-check-input" />
-                    <label asp-for="NewAnswerIsCorrect" class="form-check-label">Correct</label>
+
+            @if (Model.QuestionType == QuestionType.MultiChoice)
+            {
+                <div class="col-md-2">
+                    <div class="form-check mt-2">
+                        <input asp-for="NewAnswerIsCorrect" class="form-check-input" />
+                        <label asp-for="NewAnswerIsCorrect" class="form-check-label">Correct</label>
+                    </div>
                 </div>
-            </div>
+            }
+
             <div class="col-md-2">
-                <button type="submit" asp-page-handler="AddAnswer" class="btn btn-outline-secondary">Add Answer</button>
+                <button type="submit" class="btn btn-outline-secondary">Add Answer</button>
             </div>
         </div>
+    </form>
+}
 
-        <!-- Show Added Answers -->
-        @if (Model.GetType().GetProperty("TempAnswers")?.GetValue(Model) is IEnumerable<TempAnswer> answers && answers.Any())
+<!-- Step 3: Final Save -->
+@if (Model.IsLocked)
+{
+    <form method="post">
+        <input type="hidden" asp-for="IsLocked" value="true"/>
+        <input type="hidden" asp-for="QuizId" />
+        <input type="hidden" asp-for="QuestionType" />
+        <input type="hidden" asp-for="questionText" />
+        <input type="hidden" asp-for="MaxMark" />
+
+        @if (Model.QuestionType == QuestionType.ShortAnswer)
+        {
+            <div class="mb-3">
+                <label asp-for="ShortAnswerText" class="form-label">Answer</label>
+                <input asp-for="ShortAnswerText" class="form-control" />
+            </div>
+        }
+
+        @if (Model.QuestionType == QuestionType.SingleChoice &&
+             Model.GetType().GetProperty("TempAnswers")?.GetValue(Model) is IEnumerable<TempAnswer> radioAnswers &&
+             radioAnswers.Any())
+        {
+            <div class="mt-3">
+                <label class="form-label">Select the correct answer:</label>
+                @for (int i = 0; i < radioAnswers.Count(); i++)
+                {
+                    var ans = radioAnswers.ElementAt(i);
+                    <div class="form-check">
+                        <input type="radio" asp-for="SelectedCorrectIndex" class="form-check-input" value="@i" id="radio_@i" />
+                        <label class="form-check-label" for="radio_@i">@ans.Text</label>
+                    </div>
+                }
+            </div>
+        }
+
+        @if (Model.QuestionType == QuestionType.MultiChoice &&
+             Model.GetType().GetProperty("TempAnswers")?.GetValue(Model) is IEnumerable<TempAnswer> checkAnswers &&
+             checkAnswers.Any())
         {
             <table class="table mt-3">
                 <thead>
-                    <tr>
-                        <th>Answer</th>
-                        <th>Correct</th>
-                    </tr>
+                    <tr><th>Answer</th><th>Correct</th></tr>
                 </thead>
                 <tbody>
-                    @foreach (var ans in answers)
+                    @foreach (var ans in checkAnswers)
                     {
                         <tr>
                             <td>@ans.Text</td>
-                            <td>@(ans.IsCorrect ? "✓" : "x")</td>
+                            <td>@(ans.IsCorrect ? "✓" : "✗")</td>
                         </tr>
                     }
                 </tbody>
             </table>
         }
-    }
 
-    <button type="submit" class="btn btn-success mt-3">Save</button>
-</form>
+        <button type="submit" class="btn btn-success mt-4">Save Question</button>
+    </form>
+}
