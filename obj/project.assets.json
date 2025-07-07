@@ -3085,11 +3085,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/hnmai1/Documents/UNI/JRM/w8/QuizApp/QuizApp.csproj",
+      "projectUniqueName": "/Users/hnmai1/Documents/UNI/JRM/w8/quiz-application/QuizApp.csproj",
       "projectName": "QuizApp",
-      "projectPath": "/Users/hnmai1/Documents/UNI/JRM/w8/QuizApp/QuizApp.csproj",
+      "projectPath": "/Users/hnmai1/Documents/UNI/JRM/w8/quiz-application/QuizApp.csproj",
       "packagesPath": "/Users/hnmai1/.nuget/packages/",
-      "outputPath": "/Users/hnmai1/Documents/UNI/JRM/w8/QuizApp/obj/",
+      "outputPath": "/Users/hnmai1/Documents/UNI/JRM/w8/quiz-application/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/hnmai1/.nuget/NuGet/NuGet.Config"

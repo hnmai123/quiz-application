@@ -17,49 +17,49 @@ build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = QuizApp
 build_property.RootNamespace = QuizApp
-build_property.ProjectDir = /Users/hnmai1/Documents/UNI/JRM/w8/QuizApp/
+build_property.ProjectDir = /Users/hnmai1/Documents/UNI/JRM/w8/quiz-application/
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 9.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = /Users/hnmai1/Documents/UNI/JRM/w8/QuizApp
+build_property.MSBuildProjectDirectory = /Users/hnmai1/Documents/UNI/JRM/w8/quiz-application
 build_property._RazorSourceGeneratorDebug = 
 build_property.EffectiveAnalysisLevelStyle = 9.0
 build_property.EnableCodeStyleSeverity = 
 
-[/Users/hnmai1/Documents/UNI/JRM/w8/QuizApp/Pages/AddQuestions.cshtml]
+[/Users/hnmai1/Documents/UNI/JRM/w8/quiz-application/Pages/AddQuestions.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvQWRkUXVlc3Rpb25zLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/hnmai1/Documents/UNI/JRM/w8/QuizApp/Pages/CreateQuiz.cshtml]
+[/Users/hnmai1/Documents/UNI/JRM/w8/quiz-application/Pages/CreateQuiz.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvQ3JlYXRlUXVpei5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/hnmai1/Documents/UNI/JRM/w8/QuizApp/Pages/Error.cshtml]
+[/Users/hnmai1/Documents/UNI/JRM/w8/quiz-application/Pages/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvRXJyb3IuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/hnmai1/Documents/UNI/JRM/w8/QuizApp/Pages/Index.cshtml]
+[/Users/hnmai1/Documents/UNI/JRM/w8/quiz-application/Pages/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/hnmai1/Documents/UNI/JRM/w8/QuizApp/Pages/Privacy.cshtml]
+[/Users/hnmai1/Documents/UNI/JRM/w8/quiz-application/Pages/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvUHJpdmFjeS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/hnmai1/Documents/UNI/JRM/w8/QuizApp/Pages/Shared/_ValidationScriptsPartial.cshtml]
+[/Users/hnmai1/Documents/UNI/JRM/w8/quiz-application/Pages/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvU2hhcmVkL19WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/hnmai1/Documents/UNI/JRM/w8/QuizApp/Pages/_ViewImports.cshtml]
+[/Users/hnmai1/Documents/UNI/JRM/w8/quiz-application/Pages/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/hnmai1/Documents/UNI/JRM/w8/QuizApp/Pages/_ViewStart.cshtml]
+[/Users/hnmai1/Documents/UNI/JRM/w8/quiz-application/Pages/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/hnmai1/Documents/UNI/JRM/w8/QuizApp/Pages/Shared/_Layout.cshtml]
+[/Users/hnmai1/Documents/UNI/JRM/w8/quiz-application/Pages/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvU2hhcmVkL19MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-p3cuhj24o3

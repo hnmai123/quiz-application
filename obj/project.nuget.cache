@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "3iACQJGVP/Y=",
+  "dgSpecHash": "vgvqd7q3hnk=",
   "success": true,
-  "projectFilePath": "/Users/hnmai1/Documents/UNI/JRM/w8/QuizApp/QuizApp.csproj",
+  "projectFilePath": "/Users/hnmai1/Documents/UNI/JRM/w8/quiz-application/QuizApp.csproj",
   "expectedPackageFiles": [
     "/Users/hnmai1/.nuget/packages/humanizer.core/2.14.1/humanizer.core.2.14.1.nupkg.sha512",
     "/Users/hnmai1/.nuget/packages/microsoft.bcl.asyncinterfaces/7.0.0/microsoft.bcl.asyncinterfaces.7.0.0.nupkg.sha512",
