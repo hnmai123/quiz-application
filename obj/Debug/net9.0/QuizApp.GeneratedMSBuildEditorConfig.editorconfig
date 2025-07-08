@@ -32,6 +32,10 @@ build_property.EnableCodeStyleSeverity =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvQWRkUXVlc3Rpb25zLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[/Users/hnmai1/Documents/UNI/JRM/w8/quiz-application/Pages/Attempt.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvQXR0ZW1wdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [/Users/hnmai1/Documents/UNI/JRM/w8/quiz-application/Pages/CreateQuiz.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvQ3JlYXRlUXVpei5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -50,6 +54,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [/Users/hnmai1/Documents/UNI/JRM/w8/quiz-application/Pages/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvU2hhcmVkL19WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/hnmai1/Documents/UNI/JRM/w8/quiz-application/Pages/View.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvVmlldy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [/Users/hnmai1/Documents/UNI/JRM/w8/quiz-application/Pages/_ViewImports.cshtml]

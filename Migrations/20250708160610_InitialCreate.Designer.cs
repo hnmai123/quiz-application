@@ -11,7 +11,7 @@ using QuizApp.Data;
 namespace QuizApp.Migrations
 {
     [DbContext(typeof(QuizDbContext))]
-    [Migration("20250626155138_InitialCreate")]
+    [Migration("20250708160610_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -95,6 +95,59 @@ namespace QuizApp.Migrations
                     b.ToTable("Quizzes");
                 });
 
+            modelBuilder.Entity("QuizApp.Models.QuizAttempt", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("AttemptedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("QuizId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Score")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("QuizId");
+
+                    b.ToTable("QuizAttempts");
+                });
+
+            modelBuilder.Entity("QuizApp.Models.UserAnswer", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsCorrect")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<Guid>("QuestionId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("QuizAttemptId")
+                        .HasColumnType("TEXT");
+
+                    b.PrimitiveCollection<string>("SelectedAnswerIds")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("TextAnswer")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("QuestionId");
+
+                    b.HasIndex("QuizAttemptId");
+
+                    b.ToTable("UserAnswers");
+                });
+
             modelBuilder.Entity("QuizApp.Models.Answer", b =>
                 {
                     b.HasOne("QuizApp.Models.Question", "Question")
@@ -121,6 +174,36 @@ namespace QuizApp.Migrations
                     b.Navigation("Quiz");
                 });
 
+            modelBuilder.Entity("QuizApp.Models.QuizAttempt", b =>
+                {
+                    b.HasOne("QuizApp.Models.Quiz", "Quiz")
+                        .WithMany()
+                        .HasForeignKey("QuizId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Quiz");
+                });
+
+            modelBuilder.Entity("QuizApp.Models.UserAnswer", b =>
+                {
+                    b.HasOne("QuizApp.Models.Question", "Question")
+                        .WithMany()
+                        .HasForeignKey("QuestionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("QuizApp.Models.QuizAttempt", "QuizAttempt")
+                        .WithMany("UserAnswers")
+                        .HasForeignKey("QuizAttemptId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Question");
+
+                    b.Navigation("QuizAttempt");
+                });
+
             modelBuilder.Entity("QuizApp.Models.Question", b =>
                 {
                     b.Navigation("Answers");
@@ -131,6 +214,11 @@ namespace QuizApp.Migrations
             modelBuilder.Entity("QuizApp.Models.Quiz", b =>
                 {
                     b.Navigation("Questions");
+                });
+
+            modelBuilder.Entity("QuizApp.Models.QuizAttempt", b =>
+                {
+                    b.Navigation("UserAnswers");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,0 +1,174 @@
+@page
+@using QuizApp.Models
+@model ViewModel
+@{
+    ViewData["Title"] = "Quiz Results";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-10 mx-auto">
+            <div class="card">
+                <div class="card-header">
+                    <h2>@Model.Quiz?.Title - Results</h2>
+                    @if (Model.QuizAttempt != null && Model.Quiz != null)
+                    {
+                        var totalMarks = Model.Quiz.Questions.Sum(q => q.MaxMark);
+                        var percentage = totalMarks > 0 ? (double)Model.QuizAttempt.Score / totalMarks * 100 : 0;
+                        <p class="text-muted mb-0">
+                            Score: @Model.QuizAttempt.Score / @totalMarks
+                            (@percentage.ToString("F1")%)
+                        </p>
+                    }
+                </div>
+                <div class="card-body">
+                    @if (Model.QuizAttempt?.UserAnswers != null && Model.QuizAttempt.UserAnswers.Any())
+                    {
+                        @for (int i = 0; i < Model.QuizAttempt.UserAnswers.Count; i++)
+                        {
+                            var userAnswer = Model.QuizAttempt.UserAnswers[i];
+                            var question = userAnswer.Question;
+
+                            <div class="mb-4 p-3 border rounded">
+                                <div class="d-flex align-items-center gap-2 mb-3">
+                                    <h5>Question @(i + 1) (@question.MaxMark marks)</h5>
+                                    @if (question.QuestionType != QuestionType.ShortAnswer)
+                                    {
+                                        @if (userAnswer.IsCorrect)
+                                        {
+                                            <span class="badge bg-success">Correct</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-danger">Incorrect</span>
+                                        }
+                                    }
+
+                                </div>
+
+                                <p><strong>@question.QuestionText</strong></p>
+
+                                @if (question.QuestionType == QuestionType.ShortAnswer)
+                                {
+                                    <div class="mb-3">
+                                        <p><strong>Your Answer:</strong></p>
+                                        <div class="p-2 border rounded bg-light">
+                                            @(userAnswer.TextAnswer ?? "No answer provided")
+                                        </div>
+                                        @if (!string.IsNullOrEmpty(userAnswer.TextAnswer))
+                                        {
+                                            var correctAnswer = question.Answers.FirstOrDefault(a => a.IsCorrect);
+                                            if (correctAnswer != null)
+                                            {
+                                                <div class="alert alert-info mt-2">
+                                                    <strong>Sample Answer:</strong> @correctAnswer.Response
+                                                </div>
+                                            }
+                                        }
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="mb-3">
+                                        <p><strong>Answer Options:</strong></p>
+                                        @foreach (var answer in question.Answers)
+                                        {
+                                            var isSelected = userAnswer.SelectedAnswerIds.Contains(answer.Id);
+                                            var isCorrect = answer.IsCorrect;
+
+                                            <div class="form-check mb-2">
+                                                @if (question.QuestionType == QuestionType.SingleChoice)
+                                                {
+                                                    <input class="form-check-input" type="radio" disabled checked="@isSelected" />
+                                                }
+                                                else
+                                                {
+                                                    <input class="form-check-input" type="checkbox" disabled checked="@isSelected" />
+                                                }
+
+                                                <label class="form-check-label">
+                                                    @if (isSelected && isCorrect)
+                                                    {
+                                                        <span class="text-success fw-bold">✓ @answer.Response</span>
+                                                    }
+                                                    else if (isSelected && !isCorrect)
+                                                    {
+                                                        <span class="text-danger fw-bold">✗ @answer.Response</span>
+                                                    }
+                                                    else if (!isSelected && isCorrect)
+                                                    {
+                                                        <span class="text-warning fw-bold">@answer.Response (Correct Answer)</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span>@answer.Response</span>
+                                                    }
+                                                </label>
+                                            </div>
+                                        }
+                                    </div>
+                                }
+
+                                <!-- Alert Box -->
+                                @if (question.QuestionType == QuestionType.ShortAnswer)
+                                {
+                                    <div class="alert alert-info">
+                                        <strong>Note:</strong> Short answer questions are evaluated based on the provided text answer.
+                                    </div>
+                                }
+                                else {
+                                    @if (userAnswer.IsCorrect)
+                                {
+                                    <div class="alert alert-success">
+                                        <strong>✓ Your answer is correct!</strong>
+                                    </div>
+                                }
+                                else if (!userAnswer.IsCorrect)
+                                {
+                                    <div class="alert alert-danger">
+                                        <strong>✗ Your answer is incorrect.</strong>
+                                        @if (question.QuestionType != QuestionType.ShortAnswer)
+                                        {
+                                            var correctAnswers = question.Answers.Where(a => a.IsCorrect).ToList();
+                                            @:<br />The correct answer@(correctAnswers.Count > 1 ? "s are" : " is"):
+                                            <strong>@string.Join(", ", correctAnswers.Select(a => a.Response))</strong>
+                                        }
+                                    </div>
+                                }
+                                }
+                            </div>
+                        }
+                    }
+                    else if (Model.Quiz != null)
+                    {
+                        <div class="alert alert-info">
+                            <h5>Quiz Not Attempted</h5>
+                            <p>This quiz has not been attempted yet or no attempt data was found.</p>
+                            <a asp-page="/Attempt" asp-route-quizid="@Model.Quiz.Id" class="btn btn-primary">
+                                Attempt Quiz
+                            </a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-warning">
+                            <p>Quiz not found.</p>
+                        </div>
+                    }
+
+                    <div class="text-center mt-4">
+                        <a asp-page="/Index" class="btn btn-primary btn-lg">
+                            <i class="fas fa-arrow-left"></i> Back to Quizzes
+                        </a>
+                        @if (Model.Quiz != null && (Model.QuizAttempt == null || !Model.QuizAttempt.UserAnswers.Any()))
+                        {
+                            <a asp-page="/Attempt" asp-route-quizid="@Model.Quiz.Id" class="btn btn-success btn-lg ms-2">
+                                <i class="fas fa-play"></i> Attempt Quiz
+                            </a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
