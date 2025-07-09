@@ -101,15 +101,27 @@ namespace QuizApp.Migrations
                     b.Property<DateTime>("AttemptedAt")
                         .HasColumnType("TEXT");
 
+                    b.Property<DateTime?>("CompletedAt")
+                        .HasColumnType("TEXT");
+
                     b.Property<Guid>("QuizId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid?>("QuizId1")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("Score")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Id");
 
                     b.HasIndex("QuizId");
+
+                    b.HasIndex("QuizId1");
 
                     b.ToTable("QuizAttempts");
                 });
@@ -179,6 +191,10 @@ namespace QuizApp.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("QuizApp.Models.Quiz", null)
+                        .WithMany("Attempts")
+                        .HasForeignKey("QuizId1");
+
                     b.Navigation("Quiz");
                 });
 
@@ -210,6 +226,8 @@ namespace QuizApp.Migrations
 
             modelBuilder.Entity("QuizApp.Models.Quiz", b =>
                 {
+                    b.Navigation("Attempts");
+
                     b.Navigation("Questions");
                 });
 

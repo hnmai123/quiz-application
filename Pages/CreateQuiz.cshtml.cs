@@ -4,7 +4,9 @@ namespace QuizApp.Pages;
 using QuizApp.Models;
 using QuizApp.Data;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
+[Authorize(Roles = "Admin")]
 public class CreateQuizModel : PageModel
 {
     private readonly QuizDbContext _context;

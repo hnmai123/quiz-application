@@ -8,6 +8,16 @@ builder.Services.AddRazorPages();
 builder.Services.AddDbContext<QuizDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddAuthentication().AddCookie("CookieAuth", options =>
+{
+    options.LoginPath = "/Login";
+    options.AccessDeniedPath = "/AccessDenied";
+    options.Cookie.HttpOnly = true;
+    options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
+    options.Cookie.SameSite = SameSiteMode.Lax;
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -19,10 +29,21 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
+
+app.MapGet("/", (HttpContext context) => 
+{
+    if (context.User.Identity?.IsAuthenticated == true)
+    {
+        return Results.Redirect("/Index");
+    }
+    return Results.Redirect("/Login");
+});
 
 app.MapStaticAssets();
 app.MapRazorPages()

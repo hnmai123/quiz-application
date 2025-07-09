@@ -3,8 +3,11 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using QuizApp.Data;
 using QuizApp.Models;
 namespace QuizApp.Pages;
+
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 
+[Authorize]
 public class IndexModel : PageModel
 {
     private readonly QuizDbContext _context;

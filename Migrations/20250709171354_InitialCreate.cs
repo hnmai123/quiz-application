@@ -52,8 +52,11 @@ namespace QuizApp.Migrations
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     QuizId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Username = table.Column<string>(type: "TEXT", nullable: false),
                     Score = table.Column<int>(type: "INTEGER", nullable: false),
-                    AttemptedAt = table.Column<DateTime>(type: "TEXT", nullable: false)
+                    AttemptedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CompletedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    QuizId1 = table.Column<Guid>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -64,6 +67,11 @@ namespace QuizApp.Migrations
                         principalTable: "Quizzes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_QuizAttempts_Quizzes_QuizId1",
+                        column: x => x.QuizId1,
+                        principalTable: "Quizzes",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -139,6 +147,11 @@ namespace QuizApp.Migrations
                 name: "IX_QuizAttempts_QuizId",
                 table: "QuizAttempts",
                 column: "QuizId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_QuizAttempts_QuizId1",
+                table: "QuizAttempts",
+                column: "QuizId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserAnswers_QuestionId",
